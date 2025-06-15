@@ -17,14 +17,14 @@ builder.Services.AddCors(options =>
 });
 
 // Настраиваем Kestrel явно
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.ListenAnyIP(5004); // HTTP
-    options.ListenAnyIP(7229, listenOptions =>
-    {
-        listenOptions.UseHttps();
-    });
-});
+//builder.WebHost.ConfigureKestrel(options =>
+//{
+//   options.ListenAnyIP(5004); // HTTP
+//    options.ListenAnyIP(7229, listenOptions =>
+//    {
+//        listenOptions.UseHttps();
+//    });
+//});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
