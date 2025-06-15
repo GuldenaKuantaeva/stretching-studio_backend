@@ -29,26 +29,12 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-if (builder.Environment.IsDevelopment())
-{
     // в проде заменить получение connection string на переменные окружения
-    builder.Services.AddDbContext<AuthContext>(options =>
-        options.UseNpgsql(builder.Configuration.GetConnectionString("AuthConnection")));
+builder.Services.AddDbContext<AuthContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("AuthConnection")));
 
-    builder.Services.AddDbContext<BookingServiceContext>(options => 
-        options.UseNpgsql(builder.Configuration.GetConnectionString("BookingServiceConnection")));
-
-    builder.Services.AddCors(options =>
-    {
-        options.AddPolicy("AllowAll", policyBuilder =>
-        {
-            policyBuilder
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-        });
-    });
-}
+builder.Services.AddDbContext<BookingServiceContext>(options => 
+    options.UseNpgsql(builder.Configuration.GetConnectionString("BookingServiceConnection")));
 
 builder.Services.AddControllers(options =>
     options.Conventions.Add(new RouteTokenTransformerConvention(new ToKebabParameterTransformer())));
