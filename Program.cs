@@ -29,7 +29,6 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-    // в проде заменить получение connection string на переменные окружения
 builder.Services.AddDbContext<AuthContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("AuthConnection")));
 
