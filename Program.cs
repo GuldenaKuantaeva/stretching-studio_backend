@@ -7,14 +7,14 @@ using StretchingStudioAPI.Middleware.Transformers;
 var builder = WebApplication.CreateBuilder(args);
 
 // Настраиваем Kestrel явно
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.ListenLocalhost(5004); // HTTP
-    options.ListenLocalhost(7229, listenOptions =>
-    {
-        listenOptions.UseHttps(); // HTTPS
-    });
-});
+// builder.WebHost.ConfigureKestrel(options =>
+// {
+//     options.ListenLocalhost(5004); // HTTP
+//     options.ListenLocalhost(7229, listenOptions =>
+//     {
+//         listenOptions.UseHttps(); // HTTPS
+//     });
+// });
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
