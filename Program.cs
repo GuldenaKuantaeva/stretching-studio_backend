@@ -10,20 +10,21 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
         policy => policy
-            .WithOrigins("https://guldenakuantaeva-stretching-studio-front-4f32.twc1.net") // замените на ваш домен
+            .WithOrigins("https://guldenakuantaeva-stretching-studio-front-4f32.twc1.net")
             .AllowAnyMethod()
-            .AllowAnyHeader());
+            .AllowAnyHeader()
+            .AllowCredentials());
 });
 
 // Настраиваем Kestrel явно
- builder.WebHost.ConfigureKestrel(options =>
- {
-     options.ListenLocalhost(5004); // HTTP
-     options.ListenLocalhost(7229, listenOptions =>
-     {
-         listenOptions.UseHttps(); // HTTPS
-     });
- });
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5004); // HTTP
+    options.ListenAnyIP(7229, listenOptions =>
+    {
+        listenOptions.UseHttps();
+    });
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -61,21 +62,16 @@ builder.Services.AddIdentityApiEndpoints<IdentityUser>(options =>
 
 var app = builder.Build();
 
+app.UseCors("AllowFrontend");
+
 if (app.Environment.IsDevelopment())
 {
-    app.UseCors("AllowAll");
-    
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowFrontend");
 app.UseAuthorization();
-
 app.MapIdentityApi<IdentityUser>();
-
 app.UseHttpsRedirection();
-
 app.MapControllers();
-
 app.Run();
