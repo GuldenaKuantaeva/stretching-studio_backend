@@ -6,15 +6,24 @@ using StretchingStudioAPI.Middleware.Transformers;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy => policy
+            .WithOrigins("https://guldenakuantaeva-stretching-studio-front-4f32.twc1.net") // замените на ваш домен
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
 // Настраиваем Kestrel явно
-// builder.WebHost.ConfigureKestrel(options =>
-// {
-//     options.ListenLocalhost(5004); // HTTP
-//     options.ListenLocalhost(7229, listenOptions =>
-//     {
-//         listenOptions.UseHttps(); // HTTPS
-//     });
-// });
+ builder.WebHost.ConfigureKestrel(options =>
+ {
+     options.ListenLocalhost(5004); // HTTP
+     options.ListenLocalhost(7229, listenOptions =>
+     {
+         listenOptions.UseHttps(); // HTTPS
+     });
+ });
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -59,6 +68,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowFrontend");
+app.UseAuthorization();
 
 app.MapIdentityApi<IdentityUser>();
 
